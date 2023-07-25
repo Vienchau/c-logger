@@ -1,5 +1,7 @@
 #include "logger.h"
 
+int is_file_exist(char* file_name);
+
 void logger_stdout(int log_level, const char* file, int line, const char* fmt, ...)
 {
     char time_buffer[30];
@@ -39,18 +41,13 @@ void logger_stdout(int log_level, const char* file, int line, const char* fmt, .
     va_end(args);
 }
 
-void logger_storage(int log_level, const char* fmt)
-{
-    long long log_limit;
-    char log_name[100];
-    read_cache(log_name, &log_limit);
-
-    if (!still_good_bro())
+void logger_storage(int log_level,  const char* fmt,  log_profile_t* log_profile){
+    if (!still_good_bro(log_profile))
     {
-        delete_top_line(NUMBER2DEL);
+        delete_top_line(log_profile->log_name, NUMBER2DEL);
     }
 
-    FILE* buffer = fopen(log_name, "a+");
+    FILE* buffer = fopen(log_profile->log_name, "a+");
     char time_buffer[40];
     GET_B_TIME(time_buffer);
 
@@ -69,70 +66,45 @@ void get_current_time(int type, char* buffer)
     strncpy(time_buffer_ptr, temp, strlen(temp) + 1);
 }
 
-int init_logger_file(char* log_name, long long log_limit)
+log_profile_t* init_logger_file(char* log_name, long long log_limit)
 {
-    if (access(LOG_CACHE, F_OK) == 0) {
-        if (remove(LOG_CACHE) == 0)
-        {
-            DEBUG("log cache exist, remove successfully.");
-        }
-        else
-        {
-            DEBUG("log cache exist, remove failed. Exit...");
-            exit(-1);
-        }
+    if(!is_file_exist(log_name))
+    {
+        FILE *fp = fopen(log_name, "w");
+        fclose(fp);
     }
-    char time[30];
-    GET_N_TIME(time);
-    json_t* root = json_object();
-    json_object_set_new(root, LOG_START, json_string(time));
-    json_object_set_new(root, LOG_FILE, json_string(log_name));
-    json_object_set_new(root, LOG_LIMIT, json_integer(log_limit));
-
-    FILE* log_cache, * log_file;
-    log_cache = fopen(LOG_CACHE, "w");
-    json_dumpf(root, log_cache, JSON_COMPACT);
-
-    json_decref(root);
-    fclose(log_cache);
+    log_profile_t* log_profile = (log_profile_t*)malloc(sizeof(log_profile_t));
+    strncpy(log_profile->log_name, log_name, strlen(log_name) + 1);
+    log_profile->log_limit = log_limit;
+    return log_profile;
 }
 
-void read_cache(char* log_name, long long* log_limit)
+void close_log_profile(log_profile_t* log_profile)
 {
-    json_error_t error;
-
-    FILE* log_cache = fopen(LOG_CACHE, "r");
-    json_t* root = json_loadf(log_cache, 0, &error);
-    char* temp = (char*)json_string_value(json_object_get(root, LOG_FILE));
-    strncpy(log_name, temp, strlen(temp) + 1);
-    *log_limit = json_integer_value(json_object_get(root, LOG_LIMIT));
-
-    fclose(log_cache);
-    json_decref(root);
+    if(log_profile)
+    {
+        free(log_profile);
+    }
 }
 
-int still_good_bro()
+int still_good_bro(log_profile_t* log_profile)
 {
-    char log_name[100];
-    long long log_limit;
-    read_cache(log_name, &log_limit);
-
-    FILE* log_file = fopen(log_name, "r");
+    FILE* log_file = fopen(log_profile->log_name, "r");
     fseek(log_file, 0L, SEEK_END);
     long sz = ftell(log_file);
-    if (sz > log_limit)
+    if (sz > log_profile->log_limit)
     {
+        fclose(log_file);
         return FALSE;
     }
+    rewind(log_file);
+    fclose(log_file);
     return TRUE;
 }
 
-void delete_top_line(int number_lines)
+void delete_top_line(char* log_name, int number_lines)
 {
-    char log_name[100], log_temp[100];
-    long long log_limit;
-    read_cache(log_name, &log_limit);
-
+    char log_temp[100];
     strncpy(log_temp, "temp", strlen("temp") + 1);
 
     FILE* fptr1, * fptr2;
@@ -140,13 +112,13 @@ void delete_top_line(int number_lines)
     fptr1 = fopen(log_name, "r");
     if (!fptr1)
     {
-        STORE_ERROR("can't open old log, deleted top lines fail!");
+        ERROR("can't open old log, deleted top lines fail!");
         exit(1);
     }
     fptr2 = fopen(log_temp, "w");
     if (!fptr2)
     {
-        STORE_ERROR("can't open new log, deleted top lines fail!");
+        ERROR("can't open new log, deleted top lines fail!");
         exit(1);
     }
 
@@ -171,6 +143,13 @@ void delete_top_line(int number_lines)
     }
 
     rename(log_temp, log_name);
+}
 
 
+int is_file_exist(char* file_name)
+{
+    if (access(file_name, F_OK) == 0) {
+        return TRUE;
+    }
+    return FALSE;
 }

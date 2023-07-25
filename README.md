@@ -20,11 +20,11 @@ ERROR("This is error info with color: %s", "red");
 
 ```c
 // init log with log_name and log size limit, this profile with save in .cache
-init_logger_file(MQTT_LOG, 1 * MB);
+log_profile_t* log_profile = init_logger_file("mqtt_log", 1 * MB);
 // start write log
-STORE_DEBUG("Start write to log!");
-STORE_INFO("store sample!");
-STORE_ERROR("i don't feel so good,...");
+STORE_DEBUG("Start write to log!",log_profile);
+STORE_INFO("store sample!",log_profile);
+STORE_ERROR("i don't feel so good,...",log_profile);
 
 ```
 
@@ -35,7 +35,3 @@ STORE_ERROR("i don't feel so good,...");
   - `-DUSE_DEBUG_LINE`
   - `-DUSE_COLOR`
   - `-DUSE_TIMESTAMP`
-
-## Requirements
-
-- `jansson` c library.

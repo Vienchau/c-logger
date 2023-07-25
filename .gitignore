@@ -1,0 +1,6 @@
+/obj
+/bin
+.vscode
+.cache
+mqtt_log
+compile.sh

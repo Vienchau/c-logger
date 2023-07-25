@@ -2,8 +2,7 @@ ifdef CROSS_COMPILE
 	CROSS_COMPILE	=	$(CROSS_PATH)
 	LIBRARY_PATH	=	$(CROSS_PREFIX)lib
 	INCLUDE_PATH	=	$(CROSS_PREFIX)include
-	LDFLAGS			=	-L$(LIBRARY_PATH) \
-						-l:libjansson.a
+	LDFLAGS			=	-L$(LIBRARY_PATH)
 
 	CFLAGS 			=	-I$(INCLUDE_PATH) 		\
 						-g 						\
@@ -16,15 +15,17 @@ endif
 ifdef LOCAL
 	LIBRARY_PATH	=	$(LOCAL_PREFIX)lib
 	INCLUDE_PATH	=	$(LOCAL_PREFIX)include
-	LDFLAGS 		=	-L$(LIBRARY_PATH) 		\
-						-ljansson
+	LDFLAGS 		=	-L$(LIBRARY_PATH)
 
 	CFLAGS 			=	-g 						\
 						-I$(INCLUDE_PATH) 		\
 						-I./inc 				\
 						-DUSE_DEBUG_LINE		\
 						-DUSE_COLOR 			\
-						-DUSE_TIMESTAMP 		
+						-DUSE_TIMESTAMP 		\
+						-fsanitize=address 		\
+						-fsanitize=leak 
+
 endif
 
 .PHONY: clean, flash
