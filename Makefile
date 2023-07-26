@@ -68,6 +68,5 @@ $(OBJDIR)/%.o: %.c
 clean:
 	$(RM) $(EXEDIR)/$(EXEC) $(OBJ) $(DEP)
  
-flash: clean all
-	@./$(EXEDIR)/$(EXEC)
+
 
