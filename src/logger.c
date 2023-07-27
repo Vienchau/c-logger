@@ -51,7 +51,7 @@ void logger_storage(int log_level,  const char* fmt,  log_profile_t* log_profile
     char time_buffer[40];
     GET_B_TIME(time_buffer);
 
-    fprintf(buffer, "%s %s: %s", time_buffer, log_level_strings[log_level], fmt);
+    fprintf(buffer, "%s %s: %s\n", time_buffer, log_level_strings[log_level], fmt);
     fclose(buffer);
 }
 

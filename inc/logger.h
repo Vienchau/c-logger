@@ -57,9 +57,9 @@ static const char* time_template[]      =       { "%Y-%m-%d %H:%M:%S"         , 
 #define     INFO(fmt    ,...)   logger_stdout( INFO     ,   __FILE__,   __LINE__,   fmt"\n"   ,##__VA_ARGS__)
 #define     ERROR(fmt   ,...)   logger_stdout( ERROR    ,   __FILE__,   __LINE__,   fmt"\n"   ,##__VA_ARGS__)
 
-#define     STORE_DEBUG(fmt    ,   log_profile_t    )       logger_storage( DEBUG   ,   fmt"\n",    log_profile_t)
-#define     STORE_INFO(fmt    ,   log_profile_t    )       logger_storage( INFO    ,   fmt"\n",    log_profile_t)
-#define     STORE_ERROR(fmt    ,   log_profile_t    )       logger_storage( ERROR   ,   fmt"\n",    log_profile_t)
+#define     STORE_DEBUG(fmt     ,   log_profile_t    )       logger_storage( DEBUG   ,   fmt,    log_profile_t)
+#define     STORE_INFO(fmt      ,   log_profile_t    )       logger_storage( INFO    ,   fmt,    log_profile_t)
+#define     STORE_ERROR(fmt     ,   log_profile_t    )       logger_storage( ERROR   ,   fmt,    log_profile_t)
 
 #define     GET_N_TIME(buffer)  get_current_time( N_TIME    ,   buffer)
 #define     GET_B_TIME(buffer)  get_current_time( B_TIME    ,   buffer)

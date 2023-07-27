@@ -1,5 +1,5 @@
 ifdef CROSS_COMPILE
-	CROSS_COMPILE	=	$(CROSS_PATH)
+	CROSS_COMPILER	=	$(CROSS_PATH)
 	LIBRARY_PATH	=	$(CROSS_PREFIX)lib
 	INCLUDE_PATH	=	$(CROSS_PREFIX)include
 	LDFLAGS			=	-L$(LIBRARY_PATH)
@@ -30,11 +30,11 @@ endif
 
 .PHONY: clean, flash
 
-CC 			= 	$(CROSS_COMPILE)gcc
-CXX			= 	$(CROSS_COMPILE)g++
-LD			=	$(CROSS_COMPILE)ld 
-AR 			= 	$(CROSS_COMPILE)ar
-AS 			= 	$(CROSS_COMPILE)as
+CC 			= 	$(CROSS_COMPILER)gcc
+CXX			= 	$(CROSS_COMPILER)g++
+LD			=	$(CROSS_COMPILER)ld 
+AR 			= 	$(CROSS_COMPILER)ar
+AS 			= 	$(CROSS_COMPILER)as
 
 STD 		= 	gnu99
 
