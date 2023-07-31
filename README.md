@@ -39,3 +39,12 @@ close_log_profile(log_profile);
   - `-DUSE_DEBUG_LINE`
   - `-DUSE_COLOR`
   - `-DUSE_TIMESTAMP`
+
+## Build
+
+- Support static library, define  `INCLUDE_PATH` and `LIBRARY_PATH` then build with command:
+
+```bash
+make lib
+make install
+```

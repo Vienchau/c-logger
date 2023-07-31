@@ -54,7 +54,7 @@ LIB			= 	libclogger.a
 
 RM 			= 	rm
 
-all: test libs install
+all: test lib install
 
 # Builds the app
 test: $(OBJ)
@@ -76,7 +76,7 @@ $(LIBDIR)/$(LIB): $(OBJDIR)/logger.o
 	@[ -d "./lib" ] && echo "Directory lib exists." || mkdir lib	
 	$(AR) rcs $(LIBDIR)/$(LIB) $(OBJDIR)/logger.o
 
-libs: $(LIBDIR)/$(LIB)
+lib: $(LIBDIR)/$(LIB)
 
 install:
 	@echo moving lib into "$(LIBRARY_PATH)"
