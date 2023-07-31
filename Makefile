@@ -54,7 +54,7 @@ LIB			= 	libclogger.a
 
 RM 			= 	rm
 
-all: test libs
+all: test libs install
 
 # Builds the app
 test: $(OBJ)
@@ -74,13 +74,14 @@ $(OBJDIR)/%.o: %.c
 $(LIBDIR)/$(LIB): $(OBJDIR)/logger.o
 	@echo =============CLOGGER LIBRARY STATIC BUILD=============
 	@[ -d "./lib" ] && echo "Directory lib exists." || mkdir lib	
-	ar rcs $(LIBDIR)/$(LIB) $(OBJDIR)/logger.o
+	$(AR) rcs $(LIBDIR)/$(LIB) $(OBJDIR)/logger.o
 
 libs: $(LIBDIR)/$(LIB)
 
 install:
 	@echo moving lib into "$(LIBRARY_PATH)"
 	mv $(LIBDIR)/$(LIB) $(LIBRARY_PATH)
+	cp ./inc/logger.h $(INCLUDE_PATH)
 
 clean:
 	$(RM) $(EXEDIR)/$(EXEC) $(OBJ) $(DEP) $(LIBDIR)/$(LIB)
