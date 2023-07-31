@@ -35,38 +35,55 @@ CXX			= 	$(CROSS_COMPILER)g++
 LD			=	$(CROSS_COMPILER)ld 
 AR 			= 	$(CROSS_COMPILER)ar
 AS 			= 	$(CROSS_COMPILER)as
-
 STD 		= 	gnu99
+
+
 
 VPATH		+=	./src/
 
 EXEDIR		=	./bin
 OBJDIR 		= 	./obj
-OBJ 		+= 	$(OBJDIR)/main.o 			\
+LIBDIR		=	./lib
+
+OBJ 		+= 	$(OBJDIR)/test.o 			\
 				$(OBJDIR)/logger.o	
 
 DEP 		= 	$(OBJ:%.o=%.d)
 EXEC 		= 	logger
+LIB			= 	libclogger.a
+
 RM 			= 	rm
 
+all: test libs
+
 # Builds the app
-$(EXEDIR)/$(EXEC): $(OBJ)
+test: $(OBJ)
 	@echo =============EXE PROCESS=============
-	[ -d "./bin" ] && echo "Directory /path/to/dir exists." || mkdir ./bin	
-	$(CC) $(CFLAGS) $^ -o $@  $(LDFLAGS)
+	@[ -d "./bin" ] && echo "Directory /path/to/dir exists." || mkdir ./bin	
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(EXEDIR)/$@  
 
 -include $(DEP)
 
 # Building rule for .o files and its .c/.cpp in combination with all .h
 $(OBJDIR)/%.o: %.c 
 	@echo =============OBJ PROCESS=============
-	[ -d "./obj" ] && echo "Directory /path/to/dir exists." || mkdir ./obj	
-	$(CC)  $(CFLAGS) -MMD -c $< -o  $@  
+	@[ -d "./obj" ] && echo "Directory /path/to/dir exists." || mkdir ./obj	
+	$(CC)  $(CFLAGS) $(LDFLAGS) -c $< -o  $@  
 
-# Cleans complete project
+
+$(LIBDIR)/$(LIB): $(OBJDIR)/logger.o
+	@echo =============CLOGGER LIBRARY STATIC BUILD=============
+	@[ -d "./lib" ] && echo "Directory lib exists." || mkdir lib	
+	ar rcs $(LIBDIR)/$(LIB) $(OBJDIR)/logger.o
+
+libs: $(LIBDIR)/$(LIB)
+
+install:
+	@echo moving lib into "$(LIBRARY_PATH)"
+	mv $(LIBDIR)/$(LIB) $(LIBRARY_PATH)
 
 clean:
-	$(RM) $(EXEDIR)/$(EXEC) $(OBJ) $(DEP)
+	$(RM) $(EXEDIR)/$(EXEC) $(OBJ) $(DEP) $(LIBDIR)/$(LIB)
  
 
 

@@ -71,9 +71,9 @@ void logger_storage(int log_level,  const char* fmt,  log_profile_t* log_profile
 
 
 
-log_profile_t* init_logger_file(char* log_name, long long log_limit);
-void close_log_profile(log_profile_t* log_profile);
-void get_current_time(int type, char* buffer);
-int still_good_bro(log_profile_t* log_profile);
-void delete_top_line(char* log_name, int number_lines);
+extern log_profile_t* init_logger_file(char* log_name, long long log_limit);
+extern void close_log_profile(log_profile_t* log_profile);
+static void get_current_time(int type, char* buffer);
+static int still_good_bro(log_profile_t* log_profile);
+static void delete_top_line(char* log_name, int number_lines);
 #endif
