@@ -3,12 +3,15 @@
 int main()
 {
     log_profile_t* log_profile = init_logger_file("mqtt_log", 1 * MB);
-    log_profile_t* log_profle_2 = init_logger_file("mqtt_log_2", 1*MB);
-    for(int i = 0; i <  100000; i++)
-    {
-        STORE_DEBUG("new log!", log_profile);
-        STORE_DEBUG("new log 2!", log_profle_2);
-    }
+    STORE_DEBUG("this is debug message!",log_profile);
+    STORE_INFO("this is info message!",log_profile);
+    STORE_ERROR("this is error message!",log_profile);
+    STORE_TRACE("this is trace message!",log_profile);
     close_log_profile(log_profile);
-    close_log_profile(log_profle_2);
+
+    DEBUG("this level is: %s!","debug");
+    INFO("this level is: %s!","info");
+    ERROR("this level is: %s!","error");
+    TRACE("this level is: %s!","trace");
+
 }

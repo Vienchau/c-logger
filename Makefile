@@ -23,8 +23,8 @@ ifdef LOCAL
 						-DUSE_DEBUG_LINE		\
 						-DUSE_COLOR 			\
 						-DUSE_TIMESTAMP 		\
-						-fsanitize=address 		\
-						-fsanitize=leak 
+						# -fsanitize=address 		\
+						# -fsanitize=leak 
 
 endif
 
