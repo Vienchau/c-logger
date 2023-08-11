@@ -9,9 +9,8 @@ int main()
     STORE_TRACE("this is trace message!",log_profile);
     close_log_profile(log_profile);
 
-    DEBUG("this level is: %s!","debug");
-    INFO("this level is: %s!","info");
-    ERROR("this level is: %s!","error");
-    TRACE("this level is: %s!","trace");
-
+    DEBUG("This is debug info with color: %s", "blue");
+    INFO("This is info info with color: %s", "green");
+    ERROR("This is error info with color: %s", "red");
+    TRACE("This is error info with color: %s", "orange");
 }
