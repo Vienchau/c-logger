@@ -16,7 +16,7 @@ TRACE("This is error info with color: %s", "orange");
 
 - Output:
 
-![Alt text](./images/image.png)
+![Alt text](./images/image-stdout.png)
 
 
 - In the log file storage, there are 3 log levels with limits. If the log surpasses the defined limit, the program will automatically delete the first 300 lines from the log to allow continuous writing (specified by `NUMBER2DEL` in the file header).
@@ -36,7 +36,7 @@ close_log_profile(log_profile);
 
 - Output:
 
-![Alt text](./images/image-2.png)
+![Alt text](./images/image-log-file.png)
 
 - You can enable timestamp, file line info, and color output by `-D` option in Makefile:
   - `-DUSE_DEBUG_LINE`
